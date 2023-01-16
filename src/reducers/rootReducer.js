@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import restaurantReducer from './restaurantReducer';
+import itemReducer from './itemReducer';
 import authReducer from './authReducer';
 
 const rootReducer = combineReducers({
-  restaurant: restaurantReducer,
+  items: itemReducer,
   auth: authReducer,
 });
 

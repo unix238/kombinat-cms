@@ -27,7 +27,7 @@ export const login = (username, password) => {
   return async (dispatch) => {
     dispatch(loginRequest());
     try {
-      const response = await axios.post(`${config.url}/cms/auth/login`, {
+      const response = await axios.post(`${config.url}/auth/login`, {
         userLogin: username,
         password,
       });

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 import Login from '../pages/auth/Login';
-import { Restaurants } from '../pages/main/Restaurants';
+import { Restaurants } from '../pages/main/Items';
 import config from '../config/config';
 import { PageLoader } from './PageLoader';
 import { RouterProvider } from 'react-router-dom';
@@ -53,7 +53,7 @@ export const AppRouter = () => {
   const checkToken = async () => {
     try {
       const response = await axios.post(
-        `${config.url}/cms/auth/check`,
+        `${config.url}/auth/check`,
         {},
         {
           headers: {
