@@ -1,0 +1,57 @@
+/* .side__bar {
+    width: 150px;
+    min-height: 100vh;
+    background: #191516;
+}
+
+.side__bar__item a {
+    color: #fff;
+    padding: 10px;
+    font-size: 18px;
+    font-family: 'roboto', sans-serif;
+    text-decoration: none;
+    display: block;
+}
+
+.side__bar__item a:hover {
+    background: #fff;
+    color: #191516;
+} */
+/* 
+.root {
+    display: flex;
+    flex-direction: row;
+}
+
+.content {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 20px;
+    padding: 30px
+}
+
+.restaurant__images {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.restaurant__img {
+    width: 200px;
+    height: 200px;
+}
+
+.restaurant__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.add__new__image {
+    width: 250px;
+    height: 250px;
+} */

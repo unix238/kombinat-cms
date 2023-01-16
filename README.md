@@ -1,0 +1,1 @@
+# CMS for KMBINAT website
