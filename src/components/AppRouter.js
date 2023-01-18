@@ -4,17 +4,18 @@ import axios from 'axios';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 import Login from '../pages/auth/Login';
-import { Restaurants } from '../pages/main/Items';
+import { Item } from '../pages/main/Items';
 import config from '../config/config';
 import { PageLoader } from './PageLoader';
 import { RouterProvider } from 'react-router-dom';
-
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../actions/authActions';
 
 const Routes = createBrowserRouter([
   {
     path: '/',
-    element: <Restaurants />,
+    element: <Item />,
   },
   {
     path: '*',
@@ -49,6 +50,7 @@ export const AppRouter = () => {
   const token = Cookies.get('token');
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const dispatch = useDispatch();
 
   const checkToken = async () => {
     try {
@@ -62,7 +64,8 @@ export const AppRouter = () => {
         }
       );
 
-      console.log(response.status);
+      console.log(response);
+      dispatch(setUser(response.data));
       return true;
     } catch (error) {
       return false;

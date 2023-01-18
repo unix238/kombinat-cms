@@ -4,6 +4,7 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
+  SET_USER,
 } from '../actions/authActions';
 
 const initialState = {
@@ -33,6 +34,11 @@ function reducer(state = initialState, action) {
         ...state,
         error: action.error,
         loading: false,
+      };
+    case SET_USER:
+      return {
+        ...state,
+        user: action.user,
       };
     default:
       return state;

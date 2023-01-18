@@ -2,10 +2,12 @@ import axios from 'axios';
 
 import config from '../config/config';
 
+import Cookies from 'js-cookie';
 // Constants
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const SET_USER = 'SET_USER';
 
 // Action creators
 export const loginRequest = () => ({
@@ -20,6 +22,11 @@ export const loginSuccess = (user) => ({
 export const loginFailure = (error) => ({
   type: LOGIN_FAILURE,
   error,
+});
+
+export const setUser = (user) => ({
+  type: SET_USER,
+  user,
 });
 
 // Async action

@@ -51,7 +51,22 @@ export default function itemReducer(state = initialState, action) {
         ...state,
         tags: action.tags,
       };
+    case ADD_ITEM:
+      return {
+        ...state,
+        items: [...state.items, action.item],
+      };
 
+    case UPDATE_ITEM:
+      return {
+        ...state,
+        items: state.items.map((item) => {
+          if (item._id === action.item._id) {
+            return action.item;
+          }
+          return item;
+        }),
+      };
     default:
       return state;
   }

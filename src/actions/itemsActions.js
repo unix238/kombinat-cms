@@ -41,46 +41,6 @@ export const setItems = (items, state) => {
   };
 };
 
-export const addItem = (restaurant) => {
-  return (dispatch) => {
-    // Make API call to add restaurant
-    return axios
-      .post(`${config.url}/restaurant/addRestaurant`, restaurant)
-      .then((response) => {
-        dispatch({
-          type: ADD_ITEM,
-          restaurant: response.data,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-};
-
-export const updateItem = (item) => {
-  return (dispatch) => {
-    // Make API call to update restaurant
-    return axios
-      .put(`${config.url}/restaurant/editRestaurant`, {
-        params: {
-          id: item._id,
-        },
-        item,
-      })
-      .then((response) => {
-        console.log({ response: response.data });
-        dispatch({
-          type: UPDATE_ITEM,
-          restaurant: response.data,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-};
-
 export const setBrands = (brands, setter) => {
   setter(brands);
   return {
@@ -143,7 +103,6 @@ export const setTags = (tags, setter) => {
 
 export const fetchTags = (state) => {
   return (dispatch) => {
-    // Make API call to fetch restaurants
     return axios
       .get(`${config.url}/items/tags`, {
         headers: {
@@ -152,6 +111,46 @@ export const fetchTags = (state) => {
       })
       .then((response) => {
         dispatch(setTags(response.data, state));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+};
+
+export const addItem = (item) => {
+  return (dispatch) => {
+    return axios
+      .post(
+        `${config.url}/items/addItem`,
+        { item },
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+          },
+        }
+      )
+      .then((response) => {
+        dispatch({
+          type: ADD_ITEM,
+          item: response.data,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+};
+
+export const updateItem = (item) => {
+  return (dispatch) => {
+    return axios
+      .post(`${config.url}/items/updateItem`, item)
+      .then((response) => {
+        dispatch({
+          type: UPDATE_ITEM,
+          item: response.data,
+        });
       })
       .catch((error) => {
         console.error(error);

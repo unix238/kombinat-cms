@@ -12,27 +12,13 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
-import Fab from '@mui/material/Fab';
-
-import EditIcon from '@mui/icons-material/Edit';
-import AddIcon from '@mui/icons-material/Add';
 
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-
 import { ItemCard } from '../../components/ItemCard/ItemCard';
-
 import { DataGrid } from '@mui/x-data-grid';
-
+import { AddEditDialog } from '../../components/AddEditDialog';
 const columns = [
   { field: 'id', headerName: 'ID' },
   { field: 'title', headerName: 'Title ', width: 220 },
@@ -47,7 +33,7 @@ const columns = [
   { field: 'characteristics', headerName: 'Characteristics', width: 220 },
 ];
 
-export const Restaurants = () => {
+export const Item = () => {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [currentItem, setCurrentItem] = useState(null);
@@ -56,6 +42,8 @@ export const Restaurants = () => {
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
+  const [openAddEditDialog, setOpenAddEditDialog] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -69,11 +57,19 @@ export const Restaurants = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    if (brands.length > 0 && categories.length > 0 && tags.length > 0) {
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+  }, [brands, categories, tags]);
+
+  useEffect(() => {
     const data = items.map((item) => {
       return {
         id: item._id,
         title: item.title,
-        description: item.descriptions[0],
+        description: item.description,
         brand: brands.find((brand) => brand._id === item.brand).title,
         categories: categories
           .filter((category) => item.categories.includes(category._id))
@@ -88,7 +84,7 @@ export const Restaurants = () => {
           .map((tag) => tag.title)
           .join(', '),
         sizes: item.sizes.join(', '),
-        characteristics: item.characteristics[0],
+        characteristics: item.characteristics,
       };
     });
     setDataRows(data);
@@ -107,30 +103,53 @@ export const Restaurants = () => {
     );
   }, [searchText]);
 
+  const currentHandler = (e) => {
+    setCurrentItem(items.find((item) => item._id === e.row.id));
+    setOpenAddEditDialog(true);
+  };
+
   return (
     <div className='root'>
-      <SideBar />
+      <Box sx={{ display: 'flex' }}>
+        <SideBar />
+      </Box>
       <Container maxWidth='xl'>
         <TextField
           label='Поиск'
           variant='outlined'
-          sx={{ width: '100%', marginBottom: '20px' }}
+          sx={{ width: '80%', marginBottom: '20px' }}
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
         />
+        <Button variant='outlined' onClick={() => setOpenAddEditDialog(true)}>
+          Добавить Новый Товар
+        </Button>
+        {!isLoading ? (
+          <AddEditDialog
+            brands={brands}
+            categories={categories}
+            tags={tags}
+            open={openAddEditDialog}
+            setOpen={setOpenAddEditDialog}
+            current={currentItem ? currentItem : null}
+          />
+        ) : (
+          <></>
+        )}
+
         <div style={{ height: '400px', width: '100%' }}>
           <DataGrid
             rows={filteredItems}
             columns={columns}
             pageSize={5}
             rowsPerPageOptions={[5]}
-            onRowClick={(e) => setCurrentItem(e.row)}
+            onRowClick={currentHandler}
           />
         </div>
         {currentItem && (
-          <Container>
+          <div className='content'>
             <ItemCard item={currentItem} />
-          </Container>
+          </div>
         )}
       </Container>
     </div>

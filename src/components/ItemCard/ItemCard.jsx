@@ -8,7 +8,7 @@ export const ItemCard = ({ item, style }) => {
   return (
     <div className={cl.item__card}>
       <div className={cl.item__image}>
-        <img src={item.images} alt={item.name} />
+        <img src={item.images[0]} alt={item.name} />
       </div>
       <div className={cl.item__text}>
         <div className={cl.top}>
