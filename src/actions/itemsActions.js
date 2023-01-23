@@ -142,10 +142,21 @@ export const addItem = (item) => {
   };
 };
 
-export const updateItem = (item) => {
+export const updateItem = (newitem, id) => {
   return (dispatch) => {
     return axios
-      .post(`${config.url}/items/updateItem`, item)
+      .post(
+        `${config.url}/items/updateItem`,
+        {
+          newitem: newitem,
+          id: id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+          },
+        }
+      )
       .then((response) => {
         dispatch({
           type: UPDATE_ITEM,

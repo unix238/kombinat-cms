@@ -13,8 +13,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Chip from '@mui/material/Chip';
-
-import { addItem } from '../actions/itemsActions';
+import SendIcon from '@mui/icons-material/Send';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ClearIcon from '@mui/icons-material/Clear';
+import NotInterestedIcon from '@mui/icons-material/NotInterested';
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
+import { addItem, updateItem } from '../actions/itemsActions';
 import { useDispatch, useSelector } from 'react-redux';
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -81,6 +86,12 @@ export const AddEditDialog = ({
     }
   }, [current]);
 
+  useEffect(() => {
+    console.log(
+      'zxczxzxzxzxzxzxzxzxczczxzxccccccccczxcccccccczxczxczxczxczxczxczxczxc'
+    );
+  }, [current]);
+
   const handleChange = (event, setter) => {
     const {
       target: { value },
@@ -136,6 +147,26 @@ export const AddEditDialog = ({
     dispatch(addItem(newItem));
     handleClear();
     handleClose();
+  };
+
+  const handleItemEdit = async () => {
+    const newItem = {
+      title: itemTitle,
+      descriptions: itemDescription,
+      price: itemPrice,
+      images: itemImage,
+      quantity: itemQuantity,
+      // sizes: itemSizes.contains(',') ? itemSizes.split(',') : itemSizes,
+      sizes: itemSizes.includes(',') ? itemSizes.split(',') : itemSizes,
+      characteristics: itemCharacteristics,
+      brand: selectBrands,
+      categories: selectCategories.map((cat) => cat._id),
+      tags: selectedTags.map((tag) => tag._id),
+    };
+    console.log('newItem', newItem);
+    dispatch(updateItem(newItem, itemId));
+    // handleClear();
+    // handleClose();
   };
 
   const imageToBase64 = (imageFile) => {
@@ -324,9 +355,30 @@ export const AddEditDialog = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Отменить</Button>
-        <Button onClick={handleClear}>Очистить</Button>
-        <Button onClick={addNewItem}>
-          {current ? 'Изменить' : 'Добавить'}
+        <Button
+          variant='outlined'
+          color='error'
+          onClick={handleClear}
+          startIcon={<DeleteIcon />}
+        >
+          Удалить
+        </Button>
+        <Button
+          variant='outlined'
+          onClick={handleClear}
+          startIcon={<ClearIcon />}
+        >
+          Очистить
+        </Button>
+        <Button
+          variant='outlined'
+          onClick={handleItemEdit}
+          startIcon={<EditIcon />}
+        >
+          Изменить
+        </Button>
+        <Button variant='outlined' onClick={addNewItem} startIcon={<AddIcon />}>
+          Добавить
         </Button>
       </DialogActions>
     </Dialog>

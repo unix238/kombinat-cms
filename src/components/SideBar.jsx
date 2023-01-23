@@ -16,6 +16,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const pages = ['Товары', 'Продажи', 'Статистика'];
 const settings = ['Профиль', 'Панель упарвления', 'Выйти'];
@@ -45,6 +46,20 @@ export const SideBar = () => {
 
   const Logout = () => {
     Cookies.remove('token');
+  };
+  let navigate = useNavigate();
+
+  const click = (page) => {
+    console.log(page);
+    if (page === 'Продажи') {
+      return navigate('/sells');
+    }
+    if (page === 'Статистика') {
+      return navigate('/statistics');
+    }
+    if (page === 'Товары') {
+      return navigate('/');
+    }
   };
 
   return (
@@ -136,7 +151,10 @@ export const SideBar = () => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={(e) => {
+                  handleCloseNavMenu(e);
+                  click(page);
+                }}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}

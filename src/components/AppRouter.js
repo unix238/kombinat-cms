@@ -11,11 +11,16 @@ import { RouterProvider } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../actions/authActions';
+import { Sells } from '../pages/main/Sells';
 
 const Routes = createBrowserRouter([
   {
     path: '/',
     element: <Item />,
+  },
+  {
+    path: '/sells',
+    element: <Sells />,
   },
   {
     path: '*',
