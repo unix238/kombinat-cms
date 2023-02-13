@@ -14,6 +14,9 @@ export const FETCH_CATEGORIES = 'FETCH_CATEGORIES';
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const FETCH_TAGS = 'FETCH_TAGS';
 export const SET_TAGS = 'SET_TAGS';
+export const DELETE_ITEM = 'DELETE_ITEM';
+export const FETCH_ORDERS = 'FETCH_ORDERS';
+export const SET_ORDERS = 'SET_ORDERS';
 
 export const fetchItems = (state) => {
   return (dispatch) => {
@@ -155,5 +158,49 @@ export const updateItem = (newitem, id) => {
       .catch((error) => {
         console.error(error);
       });
+  };
+};
+
+export const deleteItem = (id) => {
+  return (dispatch) => {
+    return axios
+      .delete(`${config.url}/items/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({
+            type: DELETE_ITEM,
+            id: id,
+          });
+        }
+      });
+  };
+};
+
+export const fetchOrders = (state) => {
+  return (dispatch) => {
+    return axios
+      .get(`${config.url}/orders/all`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      })
+      .then((response) => {
+        dispatch(setOrders(response.data, state));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+};
+
+const setOrders = (orders, state) => {
+  state(orders);
+  return {
+    type: SET_ORDERS,
+    orders,
   };
 };

@@ -19,7 +19,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import NotInterestedIcon from '@mui/icons-material/NotInterested';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
-import { addItem, updateItem } from '../actions/itemsActions';
+import { addItem, updateItem, deleteItem } from '../actions/itemsActions';
 import { useDispatch, useSelector } from 'react-redux';
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -84,12 +84,6 @@ export const AddEditDialog = ({
       setItemTitle(current.title);
       setItemId(current._id);
     }
-  }, [current]);
-
-  useEffect(() => {
-    console.log(
-      'zxczxzxzxzxzxzxzxzxczczxzxccccccccczxcccccccczxczxczxczxczxczxczxczxc'
-    );
   }, [current]);
 
   const handleChange = (event, setter) => {
@@ -198,6 +192,12 @@ export const AddEditDialog = ({
     dispatch(updateItem(newItem, itemId));
     // handleClear();
     // handleClose();
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteItem(itemId));
+    handleClear();
+    handleClose();
   };
 
   const imageToBase64 = (imageFile) => {
@@ -389,7 +389,7 @@ export const AddEditDialog = ({
         <Button
           variant='outlined'
           color='error'
-          onClick={handleClear}
+          onClick={handleDelete}
           startIcon={<DeleteIcon />}
         >
           Удалить
