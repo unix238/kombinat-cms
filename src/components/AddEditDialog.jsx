@@ -48,7 +48,7 @@ export const AddEditDialog = ({
   const [itemTitle, setItemTitle] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [itemPrice, setItemPrice] = useState('');
-  const [itemImage, setItemImage] = useState([]);
+  const [itemImage, setItemImage] = useState(null);
   const [itemId, setItemId] = useState('');
   const [itemQuantity, setItemQuantity] = useState(0);
   const [itemSizes, setItemSizes] = useState('');
@@ -121,14 +121,20 @@ export const AddEditDialog = ({
   };
 
   const handleImageChange = async (e) => {
+    console.log('e.target.files', e.target.files);
     setItemImage(e.target.files);
-    await Promise.all(
-      Array.from(e.target.files).map(async (file) => {
-        const base64 = await imageToBase64(file);
-        setItemImage((prev) => [...prev, base64]);
-      })
-    );
+
+    // await Promise.all(
+    //   Array.from(e.target.files).map(async (file) => {
+    //     const base64 = await imageToBase64(file);
+    //     setItemImage((prev) => [...prev, base64]);
+    //   })
+    // );
   };
+
+  useEffect(() => {
+    console.log(itemImage);
+  }, [itemImage]);
 
   const addNewItem = async () => {
     const newItem = {
@@ -136,6 +142,7 @@ export const AddEditDialog = ({
       descriptions: itemDescription,
       price: itemPrice,
       images: itemImage,
+      itemImage: itemImage,
       quantity: itemQuantity,
       sizes: itemSizes.split(','),
       characteristics: itemCharacteristics,
@@ -143,8 +150,32 @@ export const AddEditDialog = ({
       categories: selectCategories.map((cat) => cat._id),
       tags: selectedTags.map((tag) => tag._id),
     };
-    console.log('newItem', newItem);
-    dispatch(addItem(newItem));
+    const formData = new FormData();
+    for (let i = 0; i < itemImage.length; i++) {
+      formData.append('image', itemImage[i]);
+    }
+
+    if (itemSizes.includes(',')) {
+      for (let i = 0; i < itemSizes.split(',').length; i++) {
+        formData.append('sizes', itemSizes.split(',')[i]);
+      }
+    } else {
+      formData.append('sizes', itemSizes);
+    }
+
+    formData.append('title', itemTitle);
+    formData.append('descriptions', itemDescription);
+    formData.append('price', itemPrice);
+    formData.append('characteristics', itemCharacteristics);
+    formData.append('brand', selectBrands);
+    for (let i = 0; i < selectCategories.length; i++) {
+      formData.append('categories', selectCategories[i]._id);
+    }
+    for (let i = 0; i < selectedTags.length; i++) {
+      formData.append('tags', selectedTags[i]._id);
+    }
+    formData.append('seller', selledID);
+    dispatch(addItem(formData));
     handleClear();
     handleClose();
   };
@@ -258,14 +289,14 @@ export const AddEditDialog = ({
         <FormControl fullWidth margin='dense'>
           <Button variant='contained' component='label'>
             Загрузить изображение
-            <input
-              type='file'
-              value={itemImageName}
-              hidden
-              multiple
-              onChange={handleImageChange}
-            />
           </Button>
+          <input
+            type='file'
+            name='image'
+            // hidden
+            multiple
+            onChange={handleImageChange}
+          />
         </FormControl>
         <TextField
           autoFocus

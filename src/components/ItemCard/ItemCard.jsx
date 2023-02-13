@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import config from '../../config/config';
 
 import cl from './ItemCard.module.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +9,7 @@ export const ItemCard = ({ item, style }) => {
   return (
     <div className={cl.item__card}>
       <div className={cl.item__image}>
-        <img src={item.images[0]} alt={item.name} />
+        <img src={`${config.upload}${item.images[0]}`} alt={item.name} />
       </div>
       <div className={cl.item__text}>
         <div className={cl.top}>

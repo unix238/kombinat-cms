@@ -120,25 +120,14 @@ export const fetchTags = (state) => {
 
 export const addItem = (item) => {
   return (dispatch) => {
-    return axios
-      .post(
-        `${config.url}/items/addItem`,
-        { item },
-        {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`,
-          },
-        }
-      )
-      .then((response) => {
-        dispatch({
-          type: ADD_ITEM,
-          item: response.data,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    const options = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${Cookies.get('token')}`,
+      },
+    };
+
+    return axios.post(`${config.url}/items/addItem`, item, options);
   };
 };
 

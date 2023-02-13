@@ -78,7 +78,7 @@ export const Item = () => {
         price: item.price,
         quantity: 100,
         // quantity: item.quantity,
-        images: item.images.join(', '),
+        // images: item.images.join(', '),
         tags: tags
           .filter((tag) => item.tags.includes(tag._id))
           .map((tag) => tag.title)
